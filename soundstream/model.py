@@ -2,8 +2,6 @@ import torch
 from torch import nn, Tensor
 
 # from zeta import RVQ
-
-
 class ResidualUnit(nn.Module):
     """
     ResidualUnit is a module that represents a residual unit in a neural network.
