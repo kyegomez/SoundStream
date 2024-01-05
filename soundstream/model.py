@@ -1,6 +1,7 @@
 import torch
 from torch import nn, Tensor
 
+
 # from zeta import RVQ
 class ResidualUnit(nn.Module):
     """
@@ -54,9 +55,9 @@ class ResidualUnit(nn.Module):
             *args,
             **kwargs,
         )
-        
+
         self.activation = nn.ELU()
-        
+
     def forward(self, x: Tensor) -> Tensor:
         """
         Forward pass of the ResidualUnit module.
@@ -73,6 +74,3 @@ class ResidualUnit(nn.Module):
         x = self.conv2(x)
         x = self.activation(x)
         return x + skip
-
-
-

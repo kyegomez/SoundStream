@@ -1,4 +1,4 @@
-import torch 
+import torch
 from soundstream.model import ResidualUnit
 
 
