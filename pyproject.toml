@@ -26,6 +26,7 @@ python = "^3.6"
 swarms = "*"
 zetascale = "*"
 torch = "*"
+vector-quantize-pytorch = "*"
 
 
 [tool.poetry.group.lint.dependencies]

@@ -1,3 +1,4 @@
 torch
 zetascale
 swarms
+vector-quantize-pytorch

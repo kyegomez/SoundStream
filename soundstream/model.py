@@ -36,7 +36,7 @@ class ResidualUnit(nn.Module):
         self.conv1 = nn.Conv1d(
             in_channels,
             out_channels,
-            kernel_size=7,
+            kernel_size=1,
             dilation=dilation,
             stride=stride,
             # padding=7,
@@ -54,7 +54,9 @@ class ResidualUnit(nn.Module):
             *args,
             **kwargs,
         )
-
+        
+        self.activation = nn.ELU()
+        
     def forward(self, x: Tensor) -> Tensor:
         """
         Forward pass of the ResidualUnit module.
@@ -66,48 +68,11 @@ class ResidualUnit(nn.Module):
             Tensor: Output tensor.
         """
         skip = x
-        print(f"input: {x.shape}")
         x = self.conv1(x)
-        print(f"conv1: {x.shape}")
+        x = self.activation(x)
         x = self.conv2(x)
-        print(f"conv2: {x.shape}")
-        return x  # + skip
+        x = self.activation(x)
+        return x + skip
 
 
-x = torch.randn(1, 128, 100)
-residual_unit = ResidualUnit(128, 128, dilation=1)
-out = residual_unit(x)
-print(out.shape)
 
-
-class EncoderBlock(nn.Module):
-    def __init__(
-        self,
-        in_channels: int,
-        out_channels: int,
-        stride: int,
-        *args,
-        **kwargs,
-    ):
-        super().__init__()
-        self.in_channels = in_channels
-        self.out_channels = out_channels
-        self.stride = stride
-        self.k = 2 * stride
-
-        self.ru1 = ResidualUnit(in_channels, out_channels, dilation=1)
-
-        self.ru2 = ResidualUnit(
-            out_channels, out_channels, dilation=3
-        )
-
-        self.ru3 = ResidualUnit(
-            out_channels, out_channels, dilation=9
-        )
-
-        self.ru4 = ResidualUnit(
-            out_channels,
-            out_channels,
-            kernel_size=self.k,
-            stride=self.stride,
-        )
