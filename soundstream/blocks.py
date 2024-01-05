@@ -1,13 +1,12 @@
 import torch
 from torch import nn, Tensor
-import torch.nn.functional as F
 
 
 class FiLM(nn.Module):
     def __init__(self, dim, dim_cond):
         super().__init__()
         self.to_cond = nn.Linear(dim_cond, dim * 2)
-    
+
     def forward(self, x: Tensor, cond):
         gamma, beta = self.to_cond(cond).chunk(2, dim=-1)
         return x * gamma + beta
@@ -45,7 +44,7 @@ class EncoderBlock(nn.Module):
             stride=stride,
             padding=1,
         )
-        
+
         # activation
         self.act = nn.ELU()
 
@@ -53,7 +52,7 @@ class EncoderBlock(nn.Module):
         # Apply each residual unit in sequence
         for unit in self.residual_units:
             x = unit(x)
-            
+
         # Down-sample the result
         x = self.downsample(x)
         return x
